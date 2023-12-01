@@ -1,0 +1,82 @@
+version: '3'
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  api:
+    image: linkextractor-api:step5-python
+    build: ./api
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    volumes:
+      - ./shared_data:/shared_data
+  
+  api2:
+    image: instancesecond:step5-python
+    build: ./api2
+    ports:
+      - "5001:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    volumes:
+      - ./shared_data:/shared_data
+    
+  api3:
+    image: instancia3:step5-python
+    build: ./api3
+    ports:
+      - "5002:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    volumes:
+      - ./shared_data:/shared_data
+
+     
+  api4:
+    image: instancia4:step5-python
+    build: ./api4
+    ports:
+      - "5003:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    volumes:
+      - ./shared_data:/shared_data
+
+  api5:
+    image: instancia5:step5-python
+    build: ./api5
+    ports:
+      - "5004:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - my_network
+    volumes:
+      - ./shared_data:/shared_data
+      
+  redis:
+    image: redis
+    networks:
+      - my_network
