@@ -69,7 +69,9 @@ def recibir_datos():
         numero = data.get('numero')  
         numerox = int(numero)
         csv_path = '/shared_data/movie.csv'
+        bin_path = '/shared_data/movie.bin'
         af = pd.read_csv(csv_path)
+        af = pd.read_bin(bin_path)
         
         peli = af
 
@@ -156,6 +158,15 @@ def get_csv():
         return jsonify(csvx)
     else:
         return jsonify({"mensaje": "No hay valores finales almacenados en Redis"})
+    
+@app.route('/api/bin', methods=['GET'])
+def get_bin():
+    csv_cached = redis_conn.get('bin') 
+    if csv_cached:
+        csvx = json.loads(csv_cached)
+        return jsonify(csvx)
+    else:
+        return jsonify({"mensaje": "No hay valores finales almacenados en Redis"})    
 
 
 app.run(host="0.0.0.0")
