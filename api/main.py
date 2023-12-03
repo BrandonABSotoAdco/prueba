@@ -25,7 +25,8 @@ total = {}
 valoresfinal = {}
 peliculasp = {}
 df = pd.DataFrame()
-csv_path = '/shared_data/movie.bin'
+csv_path = '/shared_data/movie.csv'
+bin_path = '/shared_data/movie.bin'
 
 @app.route('/api/csv', methods=['POST'])
 def recibir_csv():
@@ -41,6 +42,19 @@ def recibir_csv():
     else:
         return jsonify({"mensaje": "Esta ruta solo acepta solicitudes POST"})
 
+@app.route('/api/bin', methods=['POST'])
+def recibir_bin():
+    global df
+    if request.method == 'POST':
+        data = request.get_json()  
+        nombre = data.get('obj')  
+        df = pd.DataFrame(nombre)
+        csv_path = '/shared_data/movie.bin'
+        df.to_bin(csv_path, index=False)
+        redis_conn.set('bin', json.dumps(nombre))
+        return jsonify({"bin cargado correctamente a redis"})
+    else:
+        return jsonify({"mensaje": "Esta ruta solo acepta solicitudes POST"})
 
 @app.route('/api/valor', methods=['POST'])
 def recibir_datos():
