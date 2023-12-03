@@ -38,8 +38,14 @@ valores = pd.DataFrame(users)
 valores = valores.fillna(0)
 users_dict = valores.to_dict(orient='index')
 
+app = Flask(__name__)
+
 @app.route('/upload', methods=['POST'])
+
 def upload_data():
+    
+    pass
+
     try:
         # Read binary data from the request
         binary_data = request.get_data()
