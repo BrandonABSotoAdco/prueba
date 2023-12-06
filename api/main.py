@@ -51,8 +51,8 @@ def recibir_bin():
         data = request.get_json()  
         movie = data.get('obj')  
         df = pd.DataFrame(movie)
-        csv_path = '/shared_data/movie.bin'
-        df.to_bin(csv_path, index=False)
+        bin_path = '/shared_data/movie.bin'  # Corregir esta línea
+        df.to_bin(bin_path, index=False)
         redis_conn.set('bin', json.dumps(nombre))
         return jsonify({"bin cargado correctamente a redis"})
     else:
@@ -169,6 +169,17 @@ def get_bin():
         return jsonify(csvx)
     else:
         return jsonify({"mensaje": "No hay valores finales almacenados en Redis"})    
+    
+@app.route('/api/mostrar_bin', methods=['GET'])
+def mostrar_bin():
+    bin_path = '/shared_data/movie.bin'
+    
+    try:
+        with open(bin_path, 'rb') as file:
+            content = file.read()
+            return content, 200, {'Content-Type': 'application/octet-stream'}
+    except FileNotFoundError:
+        return jsonify({"mensaje": "El archivo movie.bin no se encuentra"}), 404    
 
 
 app.run(host="0.0.0.0")
