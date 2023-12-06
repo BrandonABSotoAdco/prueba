@@ -72,7 +72,7 @@ def recibir_datos():
 
         numero = data.get('numero')  
         numerox = int(numero)
-        csv_path = '/shared_data/movie.csv'
+        csv_path = '/shared_data/movie.bin'
         bin_path = '/shared_data/movie.bin'
         af = pd.read_csv(csv_path)
         af = pd.read_bin(bin_path)
