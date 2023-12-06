@@ -62,14 +62,23 @@ def recibir_datos():
 
         numero = data.get('numero')
         numerox = int(numero)
+        bin_path = '/shared_data/movie.bin'
 
         try:
-            af = pd.read_pickle(bin_path)
+            with open(bin_path, 'rb') as movie:
+                af = pickle.load(movie)
         except FileNotFoundError:
             # Manejar el caso en el que el archivo no existe
             af = pd.DataFrame()
 
         peli = af
+
+        # Imprimir las columnas del DataFrame
+        print(peli.columns)
+
+        # Verificar si col3 está presente en las columnas del DataFrame
+        if col3 not in peli.columns:
+            return jsonify({"error": f"La columna {col3} no está presente en el DataFrame"})
 
         peli[col3] = pd.to_numeric(peli[col3], errors='coerce')
         peli[col1] = pd.to_numeric(peli[col1], errors='coerce')
