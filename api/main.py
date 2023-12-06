@@ -76,8 +76,8 @@ def recibir_datos():
         bin_path = '/shared_data/movie.bin'
 
         try:
-            with open(bin_path, 'rb') as bin_path:
-                af = pickle.load(bin_path)
+            with open(bin_path, 'rb') as movie:
+                af = pickle.load(movie)
         except FileNotFoundError:
             # Manejar el caso en el que el archivo no existe
             af = pd.DataFrame()
