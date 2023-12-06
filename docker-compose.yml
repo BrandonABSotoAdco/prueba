@@ -18,6 +18,8 @@ services:
       - my_network
     volumes:
       - ./shared_data:/shared_data
+      - ./movie.bin:/shared_data/movie.bin
+
   
   api2:
     image: instancesecond:step5-python

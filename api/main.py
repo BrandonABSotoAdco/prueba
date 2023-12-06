@@ -26,6 +26,7 @@ valoresfinal = {}
 peliculasp = {}
 df = pd.DataFrame()
 csv_path = '/shared_data/movie.csv'
+csv_path = '/shared_data/movie.bin'
 bin_path = '/shared_data/movie.bin'
 
 @app.route('/api/csv', methods=['POST'])
@@ -36,6 +37,7 @@ def recibir_csv():
         nombre = data.get('obj')  
         df = pd.DataFrame(nombre)
         csv_path = '/shared_data/movie.csv'
+        csv_path = '/shared_data/movie.bin'
         df.to_csv(csv_path, index=False)
         redis_conn.set('csv', json.dumps(nombre))
         return jsonify({"csv cargado correctamente a redis"})
@@ -47,8 +49,8 @@ def recibir_bin():
     global df
     if request.method == 'POST':
         data = request.get_json()  
-        nombre = data.get('obj')  
-        df = pd.DataFrame(nombre)
+        movie = data.get('obj')  
+        df = pd.DataFrame(movie)
         csv_path = '/shared_data/movie.bin'
         df.to_bin(csv_path, index=False)
         redis_conn.set('bin', json.dumps(nombre))
