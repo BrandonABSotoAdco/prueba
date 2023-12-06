@@ -3,6 +3,7 @@
 import os
 import json
 import redis
+import pickle
 from flask import Flask, request, jsonify
 from flask_cors import CORS , cross_origin
 import pandas as pd
@@ -53,8 +54,8 @@ def recibir_bin():
         movie = data.get('obj')
         df = pd.DataFrame(movie)
         bin_path = '/shared_data/movie.bin'  # Ruta al archivo binario
-        with open(bin_path, 'wb') as bin_file:
-            pickle.dump(df, bin_file)
+        with open(bin_path, 'wb') as movie:
+            pickle.dump(df, movie)
         redis_conn.set('bin', json.dumps(nombre))
         return jsonify({"bin cargado correctamente a redis"})
     else:
