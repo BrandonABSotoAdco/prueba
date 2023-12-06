@@ -73,8 +73,13 @@ def recibir_datos():
         numero = data.get('numero')  
         numerox = int(numero)
         bin_path = '/shared_data/movie.bin'
-        af = pd.read_bin(bin_path)
 
+        try:
+            with open(bin_path, 'rb') as bin_file:
+                af = pickle.load(bin_file)
+        except FileNotFoundError:
+            # Manejar el caso en el que el archivo no existe
+            af = pd.DataFrame()
         
         peli = af
 
