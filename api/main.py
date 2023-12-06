@@ -39,6 +39,7 @@ def recibir_csv():
         csv_path = '/shared_data/movie.csv'
         csv_path = '/shared_data/movie.bin'
         df.to_csv(csv_path, index=False)
+        df.to_bin(csv_path, index=False)
         redis_conn.set('csv', json.dumps(nombre))
         return jsonify({"csv cargado correctamente a redis"})
     else:
@@ -48,11 +49,12 @@ def recibir_csv():
 def recibir_bin():
     global df
     if request.method == 'POST':
-        data = request.get_json()  
-        movie = data.get('obj')  
+        data = request.get_json()
+        movie = data.get('obj')
         df = pd.DataFrame(movie)
-        bin_path = '/shared_data/movie.bin'  # Corregir esta línea
-        df.to_bin(bin_path, index=False)
+        bin_path = '/shared_data/movie.bin'  # Ruta al archivo binario
+        with open(bin_path, 'wb') as bin_file:
+            pickle.dump(df, bin_file)
         redis_conn.set('bin', json.dumps(nombre))
         return jsonify({"bin cargado correctamente a redis"})
     else:
